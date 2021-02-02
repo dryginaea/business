@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 
 abstract class LoginState extends Equatable {}
 
-class LoadedState extends LoginState {
+class InitialState extends LoginState {
   @override
   List<Object> get props => [];
 }
 
-class InitialState extends LoginState {
+class LoadingState extends LoginState {
   @override
   List<Object> get props => [];
 }
@@ -27,21 +27,8 @@ class CheckPhoneInDBFalseState extends LoginState {
 }
 
 class CheckPhoneInDBErrorState extends LoginState {
-  String error;
-
-  CheckPhoneInDBErrorState(this.error);
-
   @override
-  List<Object> get props => [error];
-}
-
-class AuthTrueState extends LoginState {
-  String token;
-
-  AuthTrueState(this.token);
-
-  @override
-  List<Object> get props => [token];
+  List<Object> get props => [];
 }
 
 class AuthErrorState extends LoginState {

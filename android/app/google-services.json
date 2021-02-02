@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1011923034573",
+    "firebase_url": "https://isbusiness.firebaseio.com",
+    "project_id": "isbusiness",
+    "storage_bucket": "isbusiness.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1011923034573:android:7f495d4d87dbe6eecfa484",
+        "android_client_info": {
+          "package_name": "info.xorcistexo.isbussiness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1011923034573-s2cis3rboo6cd30tne751dq4qvplgde1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9totLwtzpD3ca7Kok1z6u8VGQMo1BD34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1011923034573-s2cis3rboo6cd30tne751dq4qvplgde1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
