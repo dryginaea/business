@@ -22,7 +22,7 @@ class LoadedLessonInfoState extends LessonInfoState {
   UserData user;
   String avatar;
   String balls;
-  bool check;
+  int check;
   List<Question> questions;
   List<Lesson> lessons;
   int index;

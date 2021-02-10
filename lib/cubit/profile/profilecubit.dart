@@ -25,6 +25,7 @@ class ProfileCubit extends Cubit<ProfileState> {
       } else tempProduct = products.products[products.products.indexOf(nextProduct) - 1];
       var pastEvents = await apiService.getPastEvents();
       var courses = await apiService.getMyCourses();
+      var myProjects = await apiService.getMyEvents();
       var checkAvatar = await apiService.checkUserAvatar();
       var push = await apiService.getStatusPush();
       var avatar;
@@ -35,7 +36,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
       var endPastEvents = pastEvents.myevents.length < 3 ? pastEvents.myevents.length : 3;
 
-      emit(LoadedProfileState(user, balls, tempProduct, nextProduct, pastEvents.myevents.sublist(0, endPastEvents), courses.courses, avatar, interests.interests, push));
+      emit(LoadedProfileState(user, balls, tempProduct, nextProduct, pastEvents.myevents.sublist(0, endPastEvents), courses.courses, myProjects.myevents, avatar, interests.interests, push));
     } catch (e) {
       emit(ErrorProfileState());
     }

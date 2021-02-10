@@ -83,7 +83,7 @@ class LessonInfo extends StatelessWidget {
             ),
             body: Column(
               children: [
-                if (!state.check) Expanded(child: Column(
+                if (state.check != 1) Expanded(child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Center(
@@ -100,7 +100,7 @@ class LessonInfo extends StatelessWidget {
                     )
                   ],
                 )),
-                if (state.check) Expanded(
+                if (state.check == 1) Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,16 +128,6 @@ class LessonInfo extends StatelessWidget {
                             onLinkTap: (url) {
                               _launchURL(url);
                             },
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.all(10.0),
-                          width: double.infinity,
-                          color: Color.fromARGB(200, 231, 235, 243),
-                          child: CachedNetworkImage(
-                            imageUrl: state.lesson.image,
-                            placeholder: (context, url) => Image(image: AssetImage("assets/images/img.png")),
-                            errorWidget: (context, url, error) => Image(image: AssetImage("assets/images/img.png")),
                           ),
                         ),
                         Container(
@@ -232,7 +222,7 @@ class LessonInfo extends StatelessWidget {
                             )),
                         for (var question in state.questions) Column(
                           children: [
-                            Container(
+                            if (question.answer.length > 0 || question.id_user == state.user.id) Container(
                               color: Color.fromARGB(200, 231, 235, 243),
                               child: ListTile(
                                 leading: CachedNetworkImage(

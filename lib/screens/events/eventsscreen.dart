@@ -52,7 +52,7 @@ class EventsScreen extends StatelessWidget {
                             child: Image(image: AssetImage("assets/images/user.png")),
                           ),
                         ),
-                        onTap: () => context.bloc<MenuCubit>().emit(InitialMenuState(3)),
+                        onTap: () => context.bloc<MenuCubit>().emit(InitialMenuState(4)),
                       )),
                       if (state.avatar != null) Expanded(flex: 1, child: GestureDetector(
                         child: CachedNetworkImage(
@@ -84,7 +84,7 @@ class EventsScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        onTap: () => context.bloc<MenuCubit>().emit(InitialMenuState(3)),
+                        onTap: () => context.bloc<MenuCubit>().emit(InitialMenuState(4)),
                       )),
                     ],
                   ),
@@ -94,7 +94,7 @@ class EventsScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.fromLTRB(10.0, 30.0, 10.0, 20.0),
                       child: Text(
-                        "Афиша мероприятий",
+                        "Афиша",
                         style: TextStyle(
                           fontFamily: 'Segoe UI',
                           fontSize: 32,
@@ -103,20 +103,13 @@ class EventsScreen extends StatelessWidget {
                         textAlign: TextAlign.left,
                       ),
                     ),
-                    if (state.projects.length == 0) Container(
-                      height: 500,
-                      alignment: Alignment.center,
-                      child:
-                      Text(
-                        "Мероприятий пока нет",
-                        style: TextStyle(
-                          fontFamily: 'Segoe UI',
-                          color: Colors.black45,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        textAlign: TextAlign.center,
+                    if (state.projects.length == 0) GestureDetector(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 30.0),
+                        height: 250,
+                        child: Image.asset("assets/images/projectsnull.png"),
                       ),
+                      onTap: () => context.bloc<MenuCubit>().emit(InitialMenuState(2)),
                     ),
                     if (state.projects.length > 0) for (var project in state.projects) Container(
                         height: 6 * MediaQuery.of(context).size.width / 8,

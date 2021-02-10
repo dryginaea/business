@@ -19,7 +19,7 @@ class PrivilegeScreen extends StatelessWidget {
             "Привилегии",
             style: TextStyle(
               fontFamily: 'Segoe UI',
-              fontSize: 19,
+              fontSize: 22,
               fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.left,

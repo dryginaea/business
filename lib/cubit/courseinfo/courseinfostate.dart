@@ -24,7 +24,7 @@ class LoadedCourseInfoState extends CourseInfoState {
   String htmlBody;
   String avatar;
   String balls;
-  bool check;
+  int check;
   List<Lesson> lessons;
   List<Question> questions;
   List<Rate> rates;

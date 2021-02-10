@@ -107,7 +107,7 @@ class CourseInfo extends StatelessWidget {
                     data: state.htmlBody,
                   ),
                 ),
-                if (!state.check) Container(
+                if (state.check != 0 && state.check != 1) Container(
                     height: 78,
                     padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 30.0),
                     color: Color.fromARGB(200, 231, 235, 243),
@@ -130,7 +130,28 @@ class CourseInfo extends StatelessWidget {
                         Navigator.push(context, MaterialPageRoute(builder: (_) => RatesScreen(state.rates,state.avatar, state.balls)));
                       },
                     )),
-                if (state.check) Container(
+                if (state.check == 0) Container(
+                    height: 78,
+                    padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 30.0),
+                    color: Color.fromARGB(200, 231, 235, 243),
+                    child: FlatButton(
+                      textColor: Colors.black54,
+                      color: Colors.black26,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Заявка отправлена',
+                            style: TextStyle(
+                              fontFamily: 'Segoe UI',
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      onPressed: () {},
+                    )),
+                if (state.check == 1) Container(
                     height: 78,
                     padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 30.0),
                     color: Color.fromARGB(200, 231, 235, 243),
@@ -284,7 +305,7 @@ class CourseInfo extends StatelessWidget {
                     )),
                 for (var question in state.questions) Column(
                   children: [
-                    Container(
+                    if (question.answer.length > 0 || question.id_user == state.user.id) Container(
                       color: Color.fromARGB(200, 231, 235, 243),
                       child: ListTile(
                         leading: CachedNetworkImage(

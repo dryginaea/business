@@ -14,11 +14,11 @@ class CourseInfoCubit extends Cubit<CourseInfoState> {
     try {
       var user = await apiService.getUserData();
       var info = await apiService.getCourse(id);
-      var check = await apiService.checkCourse(id);
+      print("STATUS " + info.status_buy.toString());
       var lessons = await apiService.getCourseLessons(id);
       var questions = await apiService.getCourseQuestions(id);
       var rates = await apiService.getCourseRates(id);
-      emit(LoadedCourseInfoState(id, user, info.name, info.video, info.htmlBody, avatar, balls, check, lessons.lessons, questions.questions, rates.rates));
+      emit(LoadedCourseInfoState(id, user, info.name, info.video, info.htmlBody, avatar, balls, info.status_buy, lessons.lessons, questions.questions, rates.rates));
     } catch (e) {
       print(e);
       emit(ErrorCourseInfoState());

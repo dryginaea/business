@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:isbusiness/cubit/registration/registrationcubit.dart';
 import 'package:isbusiness/cubit/registration/registrationstate.dart';
 import 'package:isbusiness/router/router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegistrationScreen extends StatelessWidget{
   var isSelected = [false, false];
@@ -43,6 +45,7 @@ class RegistrationScreen extends StatelessWidget{
         ),
       body: BlocBuilder<RegistrationCubit, RegistrationState>(
         builder: (context, state) {
+          print(state);
           if (state is LoadingState) return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent)));
           if (state is InitialState) isSelected = [false, false];
           return ListView(
@@ -1302,12 +1305,64 @@ class RegistrationScreen extends StatelessWidget{
                                   },
                                 )
                             ),
-                            Flexible(
+                            if (state is NoState || state is NoAgreeState || (state is ErrorState && !state.yes)) Flexible(
                                 flex: 5,
-                                child: Text(
-                                  "Нажимая кнопку «Отправить ответы» вы даете согласие на обработку персональных данных"
-                                )
-                            )
+                                child: RichText(
+                                  text: new TextSpan(
+                                    children: [
+                                      new TextSpan(
+                                        text: 'Нажимая кнопку «Отправить ответы» вы даете согласие на обработку ',
+                                        style: TextStyle(
+                                          fontFamily: 'Segoe UI',
+                                          fontSize: 14,
+                                          color: Colors.black
+                                        ),
+                                      ),
+                                      new TextSpan(
+                                        text: 'персональных данных',
+                                        style: TextStyle(
+                                          fontFamily: 'Segoe UI',
+                                          fontSize: 14,
+                                          color: Colors.blueAccent
+                                        ),
+                                        recognizer: new TapGestureRecognizer()
+                                          ..onTap = () {
+                                          launch('https://isbusiness.ru/agreeperconaldata.pdf');
+                                          },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ),
+                            if (state is YesState || state is YesAgreeState || (state is ErrorState && state.yes)) Flexible(
+                              flex: 5,
+                              child: RichText(
+                                text: new TextSpan(
+                                  children: [
+                                    new TextSpan(
+                                      text: 'Нажимая кнопку «Отправить ответы» вы даете согласие на обработку ',
+                                      style: TextStyle(
+                                          fontFamily: 'Segoe UI',
+                                          fontSize: 14,
+                                          color: Colors.black
+                                      ),
+                                    ),
+                                    new TextSpan(
+                                      text: 'персональных данных',
+                                      style: TextStyle(
+                                          fontFamily: 'Segoe UI',
+                                          fontSize: 14,
+                                          color: Colors.blueAccent
+                                      ),
+                                      recognizer: new TapGestureRecognizer()
+                                        ..onTap = () {
+                                          launch('https://isbusiness.ru/agreeperconaldatabiz.pdf');
+                                        },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         )
                     ),

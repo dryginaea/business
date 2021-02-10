@@ -96,7 +96,7 @@ class Projects {
         date = dateStart + " - " + dateFinish;
       }
 
-      return Project(project["id"].toString(), project["name"].toString(), project["images"].toString(), date, events);
+      return Project(project["id"].toString(), project["name"].toString(), project["images"].toString().replaceAll(" ", ""), date, events);
     }).toList();
 
     return Projects(
