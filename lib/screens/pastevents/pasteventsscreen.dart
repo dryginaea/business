@@ -20,7 +20,15 @@ class PastEventsScreen extends StatelessWidget {
                 backgroundColor: Colors.white,
                 appBar: AppBar(
                   elevation: 0.0,
-                  title: Text("Прошедшие мероприятия")
+                  title: Text(
+                    "Посещённые мероприятия",
+                    style: TextStyle(
+                      fontFamily: 'Segoe UI',
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.left,
+                  )
                 ),
                 body: ListView(
                   children: [

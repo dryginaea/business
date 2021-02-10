@@ -11,7 +11,7 @@ class LessonInfoCubit extends Cubit<LessonInfoState> {
 
   ApiService apiService;
 
-  void initial(String id, UserData user, String avatar, String balls, bool check, List<Question> questions, List<Lesson> lessons, int index) async {
+  void initial(String id, UserData user, String avatar, String balls, int check, List<Question> questions, List<Lesson> lessons, int index) async {
     emit(LoadingLessonInfoState());
     try {
       var lesson = await apiService.getLessonInfo(id);

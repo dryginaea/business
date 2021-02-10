@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:isbusiness/api/Api.dart';
 import 'package:isbusiness/cubit/home/homecubit.dart';
+import 'package:isbusiness/cubit/profile/profilecubit.dart';
 import 'package:isbusiness/cubit/projectinfo/projectinfostate.dart';
 import 'package:isbusiness/data/project/projects.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,6 +68,7 @@ class ProjectInfoCubit extends Cubit<ProjectInfoState> {
     var check = await apiService.checkProject(id);
     emit(LoadedProjectInfoState(id, name, video, description, events, avatar, balls, check));
     context.bloc<HomeCubit>().initial();
+    context.bloc<ProfileCubit>().initial();
     Navigator.pop(context);
     if (!cancel) showDialog(context: context, builder: (context) => AlertDialog(
       content: Text(

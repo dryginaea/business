@@ -8,6 +8,7 @@ import 'package:isbusiness/data/auth/auth.dart';
 import 'package:isbusiness/data/checkphoneindb/checkphoneindb.dart';
 import 'package:isbusiness/data/course/course.dart';
 import 'package:isbusiness/data/courseInfo/courseInfo.dart';
+import 'package:isbusiness/data/errorversion/errorversion.dart';
 import 'package:isbusiness/data/eventinfo/eventinfo.dart';
 import 'package:isbusiness/data/interests/interests.dart';
 import 'package:isbusiness/data/lessoninfo/lessoninfo.dart';
@@ -65,6 +66,11 @@ class ApiService {
 
   Future<void> deletePromocode() async {
     return await storage.deletePromocode();
+  }
+
+  Future<ErrorVersion> getVersionApp() async{
+    Response response = await dio.post('https://inficomp.ru/anketa/api/app.php');
+    return ErrorVersion.fromJson(jsonDecode(response.data));
   }
 
   Future<void> updateFCMToken (String tokenPush, String device) async{
@@ -431,15 +437,38 @@ class ApiService {
       Options _cacheOptions = buildCacheOptions(Duration(days: 360), forceRefresh: true);
       Response response = await dio.post(
           'https://inficomp.ru/anketa/api/project/getprojectsfordashboard.php',
-          data: jsonEncode(<String, String>{
-            'limit': "999",
-            'offset': "0"
+          data: jsonEncode(<String, dynamic>{
+            "limit": 999,
+            "offset": 0,
           }),
           options: _cacheOptions
       );
 
       print(response.data);
       return Projects.fromJson(jsonDecode(response.data));
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<Events> getArchive(int offset) async {
+    try {
+      final token = await getToken();
+      dio.options.headers['Authorization'] = 'Bearer $token';
+      Options _cacheOptions = buildCacheOptions(Duration(days: 360), forceRefresh: true);
+      Response response = await dio.post(
+          'https://inficomp.ru/anketa/api/event/getarchiveevents.php',
+          data: jsonEncode(<String, dynamic>{
+            'limit': 9,
+            'offset': offset,
+            'date_sort': "ASC",
+            'interests': [1, 2, 3, 4, 5, 6, 7, 8, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+          }),
+          options: _cacheOptions
+      );
+
+      print("REQUEST" + response.data);
+      return Events.fromJson(jsonDecode(response.data));
     } catch (e) {
       throw Exception(e);
     }

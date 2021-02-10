@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isbusiness/api/Api.dart';
+import 'package:isbusiness/cubit/archive/archivecubit.dart';
 import 'package:isbusiness/cubit/courseinfo/courseinfocubit.dart';
 import 'package:isbusiness/cubit/coursespromo/coursespromocubit.dart';
 import 'package:isbusiness/cubit/eventinfo/eventinfocubit.dart';
@@ -17,6 +18,7 @@ import 'package:isbusiness/cubit/registration/registrationcubit.dart';
 import 'package:isbusiness/cubit/settings/settingscubit.dart';
 import 'package:isbusiness/cubit/shop/shopcubit.dart';
 import 'package:isbusiness/cubit/splash/splashcubit.dart';
+import 'package:isbusiness/screens/archive/archivescreen.dart';
 import 'package:isbusiness/screens/course/coursescreen.dart';
 import 'package:isbusiness/screens/course/coursespromo.dart';
 import 'package:isbusiness/screens/event/eventscreen.dart';
@@ -110,6 +112,10 @@ List<SingleChildWidget> independentServices = [
   BlocProvider(
     create: (context) => CoursesPromoCubit(ApiService()),
     child: CoursesPromo(),
+  ),
+  BlocProvider(
+    create: (context) => ArchiveCubit(ApiService()),
+    child: ArchiveScreen(),
   ),
 ];
 List<SingleChildWidget> dependentServices = [];

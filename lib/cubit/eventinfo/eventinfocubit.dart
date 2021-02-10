@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:isbusiness/api/Api.dart';
 import 'package:isbusiness/cubit/home/homecubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:isbusiness/cubit/profile/profilecubit.dart';
 
 import 'eventinfostate.dart';
 
@@ -66,6 +67,7 @@ class EventInfoCubit extends Cubit<EventInfoState> {
     var check = await apiService.checkProject(id);
     emit(LoadedEventInfoState(id, name, date, description, location, video, avatar, balls, check));
     context.bloc<HomeCubit>().initial();
+    context.bloc<ProfileCubit>().initial();
     Navigator.pop(context);
     if (!cancel) showDialog(context: context, builder: (context) => AlertDialog(
       content: Text(

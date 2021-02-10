@@ -1,13 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:isbusiness/cubit/courseinfo/courseinfocubit.dart';
+import 'package:isbusiness/cubit/eventinfo/eventinfocubit.dart';
 import 'package:isbusiness/cubit/eventpastinfo/eventpastinfocubit.dart';
 import 'package:isbusiness/cubit/profile/profilecubit.dart';
 import 'package:isbusiness/cubit/profile/profilestate.dart';
 import 'package:isbusiness/cubit/shop/shopcubit.dart';
 import 'package:isbusiness/router/router.dart';
 import 'package:isbusiness/screens/editprofile/editprofile.dart';
+import 'package:isbusiness/screens/profile/course.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -29,7 +32,7 @@ class ProfileScreen extends StatelessWidget {
                     "Профиль",
                     style: TextStyle(
                       fontFamily: 'Segoe UI',
-                      fontSize: 19,
+                      fontSize: 22,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.left,
@@ -48,7 +51,26 @@ class ProfileScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          IconButton(icon: Image.asset("assets/images/link.png"), onPressed: null),
+                          IconButton(icon: SvgPicture.asset("assets/images/qrcode.svg", color: Colors.black45, height: 50), onPressed: () {
+                            showDialog(context: context, builder: (context) => AlertDialog(
+                              insetPadding: EdgeInsets.symmetric(horizontal: 20),
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 200.0,
+                                      height: 200.0,
+                                      child: QrImage(
+                                        data: "{\"id_user\": " + state.user.id + "}",
+                                        version: QrVersions.auto,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ));
+                          }, iconSize: 40.0),
                           if (state.avatar == null) CircleAvatar(
                             radius: 50.0,
                             backgroundColor: Colors.black12,
@@ -88,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           IconButton(
                               icon: Image.asset("assets/images/edit.png"),
-                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(state.avatar, state.user.surname, state.user.name, state.user.last_name, state.interests, state.user.email, state.user.phone, int.parse(state.user.type) == 0, context)))
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfile(state.avatar, state.user.surname, state.user.name, state.user.last_name, state.interests, state.user.email, state.user.phone, int.parse(state.user.type) == 1, context)))
                           ),
                         ],
                       ),
@@ -100,57 +122,69 @@ class ProfileScreen extends StatelessWidget {
                         state.user.surname + " " + state.user.name + " " + state.user.last_name,
                         style: TextStyle(
                           fontFamily: 'Segoe UI',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
                         ),
+                        textAlign: TextAlign.center,
                       )
                     ),
                     Container(
-                      height: 150,
                         alignment: Alignment.center,
                         margin: EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 20.0),
-                        child: QrImage(
-                          data: "{\"id_user\": " + state.user.id + "}",
-                          version: QrVersions.auto,
-                        ),
-                    ),
-                    Container(
-                        height: 38,
-                        margin: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0.0),
-                        child: FlatButton(
-                          textColor: Colors.indigoAccent,
-                          shape: RoundedRectangleBorder(side: BorderSide(
-                            color: Colors.indigoAccent,
-                          )),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Привилегии',
-                                style: TextStyle(
-                                  fontFamily: 'Segoe UI',
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                          onPressed: () => Navigator.pushNamed(context, privilegeRoute)
-                        )),
-                    Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.fromLTRB(30.0, 40.0, 30.0, 40.0),
                         child: Text(
                           state.balls + " баллов",
                           style: TextStyle(
                             fontFamily: 'Segoe UI',
                             fontSize: 22,
-                            fontWeight: FontWeight.w700,
                           ),
                         )
                     ),
+                    Divider(),
+                    ListTile(
+                        dense:true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 14.0),
+                        trailing: Icon(Icons.keyboard_arrow_right),
+                        title: Text(
+                          'Привилегии',
+                          style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontSize: 14,
+                          ),
+                        ),
+                        onTap: () => Navigator.pushNamed(context, privilegeRoute)
+                    ),
+                    Divider(),
+                    ListTile(
+                        dense:true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 14.0),
+                        trailing: Icon(Icons.keyboard_arrow_right),
+                        title: Text(
+                          'Мои курсы',
+                          style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontSize: 14,
+                          ),
+                        ),
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => MyCourseList(state.courses, state.avatar, state.balls)))
+                    ),
+                    Divider(),
+                    ListTile(
+                        dense:true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 14.0),
+                        trailing: Icon(Icons.keyboard_arrow_right),
+                        title: Text(
+                          'Посещённые мероприятия',
+                          style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontSize: 14,
+                          ),
+                        ),
+                        onTap: () => Navigator.pushNamed(context, pastEventsRoute)
+                    ),
+                    Divider(),
                     if (state.tempProduct != null && int.parse(state.tempProduct.cost_balls) <= int.parse(state.balls)) Container(
                         alignment: Alignment.center,
-                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+                        margin: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
                         color: Color.fromARGB(255, 243, 246, 251),
                         child: Row(
                           children: [
@@ -252,7 +286,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     if (state.tempProduct != null && int.parse(state.tempProduct.cost_balls) > int.parse(state.balls)) Container(
                         alignment: Alignment.center,
-                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 10.0),
+                        margin: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
                         color: Color.fromARGB(255, 211, 221, 233),
                         child: Row(
                           children: [
@@ -457,9 +491,9 @@ class ProfileScreen extends StatelessWidget {
                         )
                     ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 20.0),
+                      padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 20.0),
                       child: Text(
-                        "Мои курсы",
+                        "Мои мероприятия",
                         style: TextStyle(
                           fontFamily: 'Segoe UI',
                           fontSize: 22,
@@ -468,22 +502,118 @@ class ProfileScreen extends StatelessWidget {
                         textAlign: TextAlign.left,
                       ),
                     ),
-                    if (state.courses.length == 0) Container(
-                      height: 250,
-                      color: Color.fromARGB(200, 231, 235, 243),
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Нет активных курсов",
-                        style: TextStyle(
-                          fontFamily: 'Segoe UI',
-                          color: Colors.black45,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                    if (state.myProjects.length == 0) GestureDetector(
+                        child: Container(
+                          height: 250,
+                          child: Container(
+                            height: 250,
+                            child: Image.asset("assets/images/myprojectsnull.png"),
+                          ),
                         ),
-                        textAlign: TextAlign.left,
-                      ),
+                      onTap: () => Navigator.pushNamed(context, pastEventsRoute),
                     ),
-                    if (state.courses.length != 0) Container(
+                    if (state.myProjects.length == 1) GestureDetector(
+                        onTap: () {
+                          context.bloc<EventInfoCubit>().initial(state.myProjects.first.id, state.myProjects.first.dateDay, state.myProjects.first.location, state.avatar, state.balls);
+                          Navigator.pushNamed(context, eventInfoRoute);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Stack(
+                                children: [
+                                  AspectRatio(
+                                      aspectRatio: 16/9,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(4.0),
+                                        child: CachedNetworkImage(
+                                          imageUrl: state.myProjects.first.image,
+                                          placeholder: (context, url) => Image(image: AssetImage("assets/images/img.png")),
+                                          errorWidget: (context, url, error) => Image(image: AssetImage("assets/images/img.png")),
+                                        ),
+                                      )),
+                                  if (state.myProjects.first.isOnline) Align(alignment: Alignment.topRight, child: Container(
+                                    padding: EdgeInsets.all(5.0),
+                                    margin: EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        color: Colors.red
+                                    ),
+                                    child: Text(
+                                      " в эфире ",
+                                      style: TextStyle(
+                                          fontFamily: 'Segoe UI',
+                                          fontSize: 12,
+                                          color: Colors.white
+                                        //fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  )),
+                                  if (int.parse(state.myProjects.first.cost_balls) > 0) Container(
+                                    padding: EdgeInsets.all(5.0),
+                                    margin: EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        color: Colors.amberAccent
+                                    ),
+                                    child: Text(
+                                      "- " + state.myProjects.first.cost_balls + " баллов",
+                                      style: TextStyle(
+                                        fontFamily: 'Segoe UI',
+                                        fontSize: 12,
+                                        //fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  if (int.parse(state.myProjects.first.give_balls) > 0) Container(
+                                    padding: EdgeInsets.all(5.0),
+                                    margin: EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15.0),
+                                        color: Colors.amberAccent
+                                    ),
+                                    child: Text(
+                                      "+ " + state.myProjects.first.give_balls + " баллов",
+                                      style: TextStyle(
+                                        fontFamily: 'Segoe UI',
+                                        fontSize: 12,
+                                        //fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+                                child: Text(
+                                  state.myProjects.first.name,
+                                  style: TextStyle(
+                                    fontFamily: 'Segoe UI',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Text(
+                                state.myProjects.first.dateDay,
+                                style: TextStyle(
+                                    fontFamily: 'Segoe UI',
+                                    fontSize: 16,
+                                    color: Colors.black54
+                                  //fontWeight: FontWeight.w700,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
+                          ),
+                        )
+                    ),
+                    if (state.myProjects.length > 1) Container(
                       height: 250,
                       child: ListView(
                           scrollDirection: Axis.horizontal,
@@ -491,27 +621,84 @@ class ProfileScreen extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.only(right: 10.0),
                             ),
-                            for (var course in state.courses) GestureDetector(
+                            for (var project in state.myProjects) GestureDetector(
+                                onTap: () {
+                                  context.bloc<EventInfoCubit>().initial(project.id, project.dateDay, project.location, state.avatar, state.balls);
+                                  Navigator.pushNamed(context, eventInfoRoute);
+                                },
                                 child: Container(
                                   padding: EdgeInsets.only(right: 10.0),
                                   width: 300,
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      AspectRatio(
-                                          aspectRatio: 16/9,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(4.0),
-                                            child: CachedNetworkImage(
-                                              imageUrl: course.image,
-                                              placeholder: (context, url) => Image(image: AssetImage("assets/images/img.png")),
-                                              errorWidget: (context, url, error) => Image(image: AssetImage("assets/images/img.png")),
+                                      Stack(
+                                        children: [
+                                          AspectRatio(
+                                              aspectRatio: 16/9,
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(4.0),
+                                                child: CachedNetworkImage(
+                                                  imageUrl: project.image,
+                                                  placeholder: (context, url) => Image(image: AssetImage("assets/images/img.png")),
+                                                  errorWidget: (context, url, error) => Image(image: AssetImage("assets/images/img.png")),
+                                                ),
+                                              )),
+                                          if (project.isOnline) Align(alignment: Alignment.topRight, child: Container(
+                                            padding: EdgeInsets.all(5.0),
+                                            margin: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(15.0),
+                                                color: Colors.red
+                                            ),
+                                            child: Text(
+                                              " в эфире ",
+                                              style: TextStyle(
+                                                  fontFamily: 'Segoe UI',
+                                                  fontSize: 12,
+                                                  color: Colors.white
+                                                //fontWeight: FontWeight.w700,
+                                              ),
                                             ),
                                           )),
+                                          if (int.parse(project.cost_balls) > 0) Container(
+                                            padding: EdgeInsets.all(5.0),
+                                            margin: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(15.0),
+                                                color: Colors.amberAccent
+                                            ),
+                                            child: Text(
+                                              "- " + project.cost_balls + " баллов",
+                                              style: TextStyle(
+                                                fontFamily: 'Segoe UI',
+                                                fontSize: 12,
+                                                //fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                          if (int.parse(project.give_balls) > 0) Container(
+                                            padding: EdgeInsets.all(5.0),
+                                            margin: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(15.0),
+                                                color: Colors.amberAccent
+                                            ),
+                                            child: Text(
+                                              "+ " + project.give_balls + " баллов",
+                                              style: TextStyle(
+                                                fontFamily: 'Segoe UI',
+                                                fontSize: 12,
+                                                //fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                       Container(
                                         padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
                                         child: Text(
-                                          course.name,
+                                          project.name,
                                           style: TextStyle(
                                             fontFamily: 'Segoe UI',
                                             fontSize: 14,
@@ -522,164 +709,23 @@ class ProfileScreen extends StatelessWidget {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                onTap: () {
-                                  context.bloc<CourseInfoCubit>().initial(course.id, state.avatar, state.balls);
-                                  Navigator.pushNamed(context, courseInfoRoute);
-                                }
-                            )
-                          ]
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 20.0),
-                      child: Text(
-                        "Прошедшие мероприятия",
-                        style: TextStyle(
-                          fontFamily: 'Segoe UI',
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    if (state.pastProject.length == 0) Container(
-                      height: 250,
-                      color: Color.fromARGB(200, 231, 235, 243),
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Нет прошедших мероприятий",
-                        style: TextStyle(
-                          fontFamily: 'Segoe UI',
-                          color: Colors.black45,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    if (state.pastProject.length > 0) Container(
-                      height: 250,
-                      child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(right: 10.0),
-                            ),
-                            for (var project in state.pastProject) GestureDetector(
-                              child: Container(
-                                padding: EdgeInsets.only(right: 10.0),
-                                width: 300,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        AspectRatio(
-                                            aspectRatio: 16/9,
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(4.0),
-                                              child: CachedNetworkImage(
-                                                imageUrl: project.image,
-                                                placeholder: (context, url) => Image(image: AssetImage("assets/images/img.png")),
-                                                errorWidget: (context, url, error) => Image(image: AssetImage("assets/images/img.png")),
-                                              ),
-                                            )),
-                                        if (int.parse(project.cost_balls) > 0) Container(
-                                          padding: EdgeInsets.all(5.0),
-                                          margin: EdgeInsets.all(10.0),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(15.0),
-                                              color: Colors.amberAccent
-                                          ),
-                                          child: Text(
-                                            "- " + project.cost_balls + " баллов",
-                                            style: TextStyle(
-                                              fontFamily: 'Segoe UI',
-                                              fontSize: 12,
-                                              //fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                        if (int.parse(project.give_balls) > 0) Container(
-                                          padding: EdgeInsets.all(5.0),
-                                          margin: EdgeInsets.all(10.0),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(15.0),
-                                              color: Colors.amberAccent
-                                          ),
-                                          child: Text(
-                                            "+ " + project.give_balls + " баллов",
-                                            style: TextStyle(
-                                              fontFamily: 'Segoe UI',
-                                              fontSize: 12,
-                                              //fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                                      child: Text(
-                                        project.name,
+                                      Text(
+                                        project.dateDay,
                                         style: TextStyle(
-                                          fontFamily: 'Segoe UI',
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
+                                            fontFamily: 'Segoe UI',
+                                            fontSize: 16,
+                                            color: Colors.black54
+                                          //fontWeight: FontWeight.w700,
                                         ),
                                         textAlign: TextAlign.left,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                    ),
-                                    Text(
-                                      project.dateTime,
-                                      style: TextStyle(
-                                          fontFamily: 'Segoe UI',
-                                          fontSize: 16,
-                                          color: Colors.black54
-                                        //fontWeight: FontWeight.w700,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              onTap: () {
-                                context.bloc<EventPastInfoCubit>().initial(project.id, project.dateDay, project.location);
-                                Navigator.pushNamed(context, pastEventRoute);
-                              },
+                                    ],
+                                  ),
+                                )
                             )
                           ]
                       ),
                     ),
-                    if (state.pastProject.length > 0) Container(
-                        height: 38,
-                        margin: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 30.0),
-                        child: FlatButton(
-                          textColor: Colors.indigoAccent,
-                          shape: RoundedRectangleBorder(side: BorderSide(
-                            color: Colors.indigoAccent,
-                          )),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Смотреть все',
-                                style: TextStyle(
-                                  fontFamily: 'Segoe UI',
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
-                          ),
-                          onPressed: () {
-                            Navigator.pushNamed(context, pastEventsRoute);
-                          },
-                        )),
                   ],
                 )
             );

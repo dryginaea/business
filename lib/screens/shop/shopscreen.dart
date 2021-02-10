@@ -8,6 +8,7 @@ import 'package:isbusiness/cubit/menu/menustate.dart';
 import 'package:isbusiness/cubit/shop/shopcubit.dart';
 import 'package:isbusiness/cubit/shop/shopstate.dart';
 import 'package:isbusiness/router/router.dart';
+import 'package:isbusiness/screens/shop/interestsFilter.dart';
 
 class ShopScreen extends StatelessWidget {
   Map<int, String> interests = {
@@ -39,7 +40,6 @@ class ShopScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 3,
-        initialIndex: 1,
         child: BlocBuilder<ShopCubit, ShopState>(
             builder: (context, state) {
               if (state is InitialShopState) {
@@ -109,7 +109,7 @@ class ShopScreen extends StatelessWidget {
                               child: Image(image: AssetImage("assets/images/user.png")),
                             ),
                           ),
-                          onTap: () => context.bloc<MenuCubit>().emit(InitialMenuState(3)),
+                          onTap: () => context.bloc<MenuCubit>().emit(InitialMenuState(4)),
                         )),
                         if (state.avatar != null) Expanded(flex: 1, child: GestureDetector(
                           child: CachedNetworkImage(
@@ -141,7 +141,7 @@ class ShopScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          onTap: () => context.bloc<MenuCubit>().emit(InitialMenuState(3)),
+                          onTap: () => context.bloc<MenuCubit>().emit(InitialMenuState(4)),
                         )),
                       ],
                     ),
@@ -155,62 +155,35 @@ class ShopScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Flexible(flex: 1, child: Container(
+                                Flexible(flex: 1, child: GestureDetector(
+                                  child: Container(
                                     width: double.infinity,
-                                    height: 30.0,
+                                    height: 35.0,
                                     margin: EdgeInsets.only(right: 5.0),
                                     padding: EdgeInsets.all(5.0),
                                     color: Color.fromARGB(200, 231, 235, 243),
-                                    child: DropdownButtonHideUnderline(
-                                        child: DropdownButton<int>(
-                                          isExpanded: true,
-                                          hint: Text(
-                                              "Интересы",
-                                              style: TextStyle(
-                                                  fontFamily: 'Segoe UI',
-                                                  fontSize: 15,
-                                                  color: Colors.black
-                                              )
-                                          ),
-                                          onChanged: (_) {},
-                                          items: <int>[1, 2, 3, 4, 5, 6, 7, 8, 16, 17, 18, 19, 20, 21, 22, 23, 24].map((int value) {
-                                            return new DropdownMenuItem<int>(
-                                                value: value,
-                                                child: Container(
-                                                  child: Row(
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      children: [
-                                                        Flexible(flex: 1, child: Checkbox(
-                                                          activeColor: Colors.blueAccent,
-                                                          value: state.interests.contains(value),
-                                                          onChanged: (bool valueBool) {
-                                                            var list = state.interests;
-                                                            valueBool ? list.add(value) : list.remove(value);
-                                                            print(list);
-                                                            context.bloc<ShopCubit>().change(state.balls, state.products, state.avatar, list, state.free);
-                                                          },
-                                                        ),),
-                                                        Flexible(flex:5, child: Text(
-                                                          interests[value],
-                                                          style: TextStyle(
-                                                              fontFamily: 'Segoe UI',
-                                                              fontSize: 12,
-                                                              color: Colors.black),
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow.ellipsis,
-                                                          softWrap: true,
-                                                        ),)
-                                                      ]
-                                                  ),
-                                                )
-                                            );
-                                          }).toList(),
-                                        )
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                            "Интересы",
+                                            style: TextStyle(
+                                                fontFamily: 'Segoe UI',
+                                                fontSize: 15,
+                                                color: Colors.black
+                                            )
+                                        ),
+                                        Icon(Icons.arrow_drop_down, color: Colors.black54)
+                                      ],
                                     ),
-                                ),),
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (_) => Interests(state.interests, interests, state.balls, state.avatar, state.products, state.free)));
+                                  },
+                                )),
                                 Flexible(flex: 1, child: Container(
                                   width: double.infinity,
-                                  height: 30.0,
+                                  height: 35.0,
                                   margin: EdgeInsets.only(left: 5.0),
                                   padding: EdgeInsets.all(5.0),
                                   color: Color.fromARGB(200, 231, 235, 243),
@@ -543,7 +516,7 @@ class ShopScreen extends StatelessWidget {
                                           onPressed: () {
                                             if (promoController.text.length > 0) {
                                               context.bloc<ShopCubit>().sendPromocode(promoController.text);
-                                              context.bloc<CoursesPromoCubit>().initial(promoController.text, state.balls, state.avatar);
+                                              context.bloc<CoursesPromoCubit>().initial(context, promoController.text, state.balls, state.avatar);
                                               Navigator.pushNamed(context, coursePromoRoute);
                                             }
                                           },

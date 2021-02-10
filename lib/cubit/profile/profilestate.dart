@@ -24,14 +24,15 @@ class LoadedProfileState extends ProfileState {
   Product nextProduct;
   List<Event> pastProject;
   List<Course> courses;
+  List<Event> myProjects;
   String avatar;
   Map<String, bool> interests;
   bool push;
 
-  LoadedProfileState(this.user, this.balls, this.tempProduct, this.nextProduct, this.pastProject, this.courses, this.avatar, this.interests, this.push);
+  LoadedProfileState(this.user, this.balls, this.tempProduct, this.nextProduct, this.pastProject, this.courses, this.myProjects, this.avatar, this.interests, this.push);
 
   @override
-  List<Object> get props => [user, balls, tempProduct, nextProduct, pastProject, courses, avatar, interests, push];
+  List<Object> get props => [user, balls, tempProduct, nextProduct, pastProject, courses, myProjects, avatar, interests, push];
 }
 
 class ErrorProfileState extends ProfileState {
