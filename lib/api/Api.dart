@@ -135,6 +135,7 @@ class ApiService {
 
   Future<CheckPhoneInDB> sendSMS(String phone) async {
     print('https://inficomp.ru/anketa/api/confirmationbysms/sendsms.php');
+    print(phone);
     try {
       Response response = await dio.post(
         'https://inficomp.ru/anketa/api/confirmationbysms/sendsms.php',
@@ -146,6 +147,7 @@ class ApiService {
       print(response.data);
       return CheckPhoneInDB.fromJson(response.data);
     } catch (e) {
+      print(e);
       throw Exception(e);
     }
   }
