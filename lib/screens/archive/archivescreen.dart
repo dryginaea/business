@@ -157,7 +157,7 @@ class ArchiveScreen extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        context.bloc<EventPastInfoCubit>().initial(state.projects[i].id, state.projects[i].dateTime, "");
+                        context.bloc<EventPastInfoCubit>().initial(state.projects[i - 1].id, state.projects[i].dateTime, "");
                         Navigator.pushNamed(context, pastEventRoute);
                       },
                     );

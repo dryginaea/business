@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:isbusiness/cubit/eventpastinfo/eventpastinfocubit.dart';
 import 'package:isbusiness/cubit/eventpastinfo/eventpastinfostate.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class EventPastInfo extends StatelessWidget {
+  _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EventPastInfoCubit, EventPastInfoState>(
@@ -85,16 +95,13 @@ class EventPastInfo extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.all(10.0),
                           width: double.infinity,
-                          child: Text(
-                            state.description,
-                            style: TextStyle(
-                              fontFamily: 'Segoe UI',
-                              fontSize: 16,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
+                          child: Html(
+                            data: state.description,
+                            onLinkTap: (url) {
+                              _launchURL(url);
+                            },
+                          )
                         )
                       ],
                     ),
