@@ -25,11 +25,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Allow access to camera to capture photos</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Allow access to microphone</string>
+	<string>Для того, чтобы редактировать фото профиля, разрешите доступ к камере</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow access to photo library</string>
+	<string>Для того, чтобы редактировать фото профиля, разрешите доступ к вашим фото</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

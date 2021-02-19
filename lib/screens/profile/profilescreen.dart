@@ -75,7 +75,7 @@ class ProfileScreen extends StatelessWidget {
                             radius: 50.0,
                             backgroundColor: Colors.black12,
                             child: Padding(
-                              padding: EdgeInsets.all(10.0),
+                              padding: EdgeInsets.all(20.0),
                               child: Image(image: AssetImage("assets/images/user.png")),
                             ),
                           ),
@@ -95,7 +95,7 @@ class ProfileScreen extends StatelessWidget {
                               radius: 50.0,
                               backgroundColor: Colors.black12,
                               child: Padding(
-                                padding: EdgeInsets.all(10.0),
+                                padding: EdgeInsets.all(20.0),
                                 child: Image(image: AssetImage("assets/images/user.png")),
                               ),
                             ),
@@ -103,7 +103,7 @@ class ProfileScreen extends StatelessWidget {
                               radius: 50.0,
                               backgroundColor: Colors.black12,
                               child: Padding(
-                                padding: EdgeInsets.all(10.0),
+                                padding: EdgeInsets.all(20.0),
                                 child: Image(image: AssetImage("assets/images/user.png")),
                               ),
                             ),
@@ -182,6 +182,23 @@ class ProfileScreen extends StatelessWidget {
                         onTap: () => Navigator.pushNamed(context, pastEventsRoute)
                     ),
                     Divider(),
+                    if (state.user.type == "12") ListTile(
+                        dense:true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 14.0),
+                        trailing: Icon(Icons.keyboard_arrow_right),
+                        title: Text(
+                          'Выйти',
+                          style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontSize: 14,
+                          ),
+                        ),
+                        onTap: () {
+                          context.bloc<ProfileCubit>().logout();
+                          Navigator.pushNamedAndRemoveUntil(context, loginRoute, (route) => false);
+                        }
+                    ),
+                    if (state.user.type == "12") Divider(),
                     if (state.tempProduct != null && int.parse(state.tempProduct.cost_balls) <= int.parse(state.balls)) Container(
                         alignment: Alignment.center,
                         margin: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),

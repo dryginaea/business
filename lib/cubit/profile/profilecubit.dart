@@ -68,4 +68,8 @@ class ProfileCubit extends Cubit<ProfileState> {
       ],
     ));
   }
+
+  void logout() async{
+    await apiService.deleteToken();
+  }
 }
