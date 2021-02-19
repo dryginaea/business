@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:isbusiness/data/auth/auth.dart';
 import 'package:isbusiness/data/checkphoneindb/checkphoneindb.dart';
@@ -71,6 +72,15 @@ class ApiService {
   Future<ErrorVersion> getVersionApp() async{
     Response response = await dio.post('https://inficomp.ru/anketa/api/app.php');
     return ErrorVersion.fromJson(jsonDecode(response.data));
+  }
+
+  Future<void> getRegionsList () async {
+    Response response = await dio.post('https://inficomp.ru/anketa/api/project/getallregionsapp.php');
+    var mapRegion = Map<int, String>();
+    for (var region in jsonDecode(response.data)) {
+      print(region['id'] + ': "' + region['name'] + '",');
+    }
+    print(mapRegion);
   }
 
   Future<void> updateFCMToken (String tokenPush, String device) async{
