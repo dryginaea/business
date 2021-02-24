@@ -15,12 +15,15 @@ class MyCourseList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-          elevation: 0.0,
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0.0,
+            iconTheme: IconThemeData(color: Colors.black),
           title: Text(
             "Мои курсы",
             style: TextStyle(
+              color: Colors.black,
               fontFamily: 'Segoe UI',
               fontSize: 22,
               fontWeight: FontWeight.w600,

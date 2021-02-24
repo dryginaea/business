@@ -26,8 +26,11 @@ class LessonInfo extends StatelessWidget {
           var questionController = TextEditingController();
           print(state.lesson.content_not_buy);
           return Scaffold(
-            appBar: AppBar(
-              elevation: 0.0,
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                elevation: 0.0,
+                iconTheme: IconThemeData(color: Colors.black),
               title: Row(
                 children: [
                   Expanded(flex: 7, child: Container(
@@ -35,6 +38,7 @@ class LessonInfo extends StatelessWidget {
                       child: Text(
                           state.balls + "Б",
                           style: TextStyle(
+                            color: Colors.black,
                             fontFamily: 'Segoe UI',
                             fontSize: 16,
                             //fontWeight: FontWeight.w700,
@@ -349,7 +353,7 @@ class LessonInfo extends StatelessWidget {
                                 "Следующий урок",
                                 style: TextStyle(
                                   fontFamily: 'Segoe UI',
-                                  color: Colors.indigoAccent,
+                                  color: Colors.blueAccent,
                                   fontSize: 16,
                                 ),
                                 textAlign: TextAlign.right,
@@ -371,13 +375,14 @@ class LessonInfo extends StatelessWidget {
         }
 
         return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
+              backgroundColor: Colors.white,
               elevation: 0.0,
+              iconTheme: IconThemeData(color: Colors.black),
             ),
             body: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-              ),
+              child: CircularProgressIndicator(),
             )
         );
       },

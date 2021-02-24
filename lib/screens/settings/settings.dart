@@ -24,8 +24,11 @@ class SettingsScreen extends StatelessWidget {
           }
           if (state is LoadedSettingsState) {
             return Scaffold(
+                backgroundColor: Colors.white,
                 appBar: AppBar(
+                  backgroundColor: Colors.white,
                   elevation: 0.0,
+                  iconTheme: IconThemeData(color: Colors.black),
                   leading: IconButton(
                     icon: Icon(Icons.arrow_back_ios, color: Colors.black),
                     onPressed: () => Navigator.pop(context),
@@ -33,6 +36,7 @@ class SettingsScreen extends StatelessWidget {
                   title: Text(
                     "Настройки",
                     style: TextStyle(
+                      color: Colors.black,
                       fontFamily: 'Segoe UI',
                       fontSize: 19,
                       fontWeight: FontWeight.w600,
@@ -60,9 +64,6 @@ class SettingsScreen extends StatelessWidget {
                                   ),
                                   Switch(
                                     value: state.push,
-                                    inactiveThumbColor: Colors.white,
-                                    inactiveTrackColor: Colors.blueAccent,
-                                    activeColor: Colors.blueAccent,
                                     onChanged: (bool value) {
                                       context.bloc<SettingsCubit>().setPush(value);
                                     },
@@ -131,11 +132,15 @@ class SettingsScreen extends StatelessWidget {
 
 
           return Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                elevation: 0.0,
+                iconTheme: IconThemeData(color: Colors.black),
               ),
-            ),
+              body: Center(
+                child: CircularProgressIndicator(),
+              )
           );
         }
     );

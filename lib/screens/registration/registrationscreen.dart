@@ -5,11 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:isbusiness/cubit/companyInn/companyInnCubit.dart';
+import 'package:isbusiness/cubit/companyInn/companyInnState.dart';
 import 'package:isbusiness/cubit/registration/registrationcubit.dart';
 import 'package:isbusiness/cubit/registration/registrationstate.dart';
 import 'package:isbusiness/router/router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:isbusiness/data/regions/regions.dart';
 
 class RegistrationScreen extends StatelessWidget{
   var isSelected = [false, false];
@@ -23,12 +27,14 @@ class RegistrationScreen extends StatelessWidget{
     var phone = TextEditingController();
     var email = TextEditingController();
     var datebirthday = TextEditingController();
+    var region = TextEditingController();
 
     var textFieldPhone = new FocusNode();
 
     return Scaffold(
         appBar: AppBar(
             elevation: 0.0,
+            backgroundColor: Colors.white,
             leading: IconButton(
               icon: Icon(Icons.arrow_back_ios, color: Colors.black),
               onPressed: () => Navigator.pushNamed(context, loginRoute),
@@ -39,6 +45,7 @@ class RegistrationScreen extends StatelessWidget{
                   fontFamily: 'Segoe UI',
                   fontSize: 19,
                   fontWeight: FontWeight.w600,
+                  color: Colors.black
               ),
               textAlign: TextAlign.left,
             ),
@@ -46,7 +53,7 @@ class RegistrationScreen extends StatelessWidget{
       body: BlocBuilder<RegistrationCubit, RegistrationState>(
         builder: (context, state) {
           print(state);
-          if (state is LoadingState) return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent)));
+          if (state is LoadingState) return Center(child: CircularProgressIndicator());
           if (state is InitialState) isSelected = [false, false];
           return ListView(
             children: [
@@ -141,10 +148,6 @@ class RegistrationScreen extends StatelessWidget{
                     Padding(
                         padding: EdgeInsets.only(top: 15.0),
                         child: ToggleButtons(
-                            color: Colors.black45,
-                            selectedColor: Colors.blueAccent,
-                            borderColor: Colors.black45,
-                            selectedBorderColor: Colors.blueAccent,
                             borderRadius: BorderRadius.circular(2.0),
                             constraints: BoxConstraints(
                                 maxHeight: 30.0,
@@ -209,27 +212,83 @@ class RegistrationScreen extends StatelessWidget{
                     if (state is YesState || state is YesAgreeState || (state is ErrorState && state.yes)) Padding(
                       padding: EdgeInsets.only(top: 15.0),
                       child: TextField(
-                        cursorColor: Colors.indigo,
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                  title: TextField(
+                                    autofocus: true,
+                                    controller: inn,
+                                    style: TextStyle(
+                                      fontFamily: 'Segoe UI',
+                                      fontSize: 14,
+                                    ),
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      contentPadding: EdgeInsets.all(8.0),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(5.0))
+                                      ),
+                                    ),
+                                    onChanged: (text) {
+                                      context.bloc<CompanyInnCubit>().initial(text);
+                                    },
+                                  ),
+                                  content: BlocBuilder<CompanyInnCubit, CompanyInnState>(
+                                    builder: (context, stateInn) {
+                                      if (stateInn is LoadedCompanyInnState) {
+                                        return Container(
+                                          height: 300.0,
+                                          width: 300.0,
+                                          child: ListView.separated(
+                                            shrinkWrap: true,
+                                            separatorBuilder: (BuildContext context, int index) => Divider(),
+                                            itemCount: stateInn.companyList.length,
+                                            itemBuilder: (BuildContext context, int index) {
+                                              return ListTile(
+                                                onTap: () {
+                                                  inn.text = stateInn.companyList[index].inn;
+                                                  Navigator.pop(context);
+                                                },
+                                                title: Text(
+                                                  stateInn.companyList[index].name,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Segoe UI',
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      }
+
+                                      context.bloc<CompanyInnCubit>().initial("");
+                                      return Container(
+                                        height: 300.0,
+                                        width: 300.0,
+                                        child: Center(),
+                                      );
+                                    },
+                                  )
+                              )
+                          );
+                        },
                         style: TextStyle(
-                          color: Colors.black,
                           fontFamily: 'Segoe UI',
                           fontSize: 14,
                         ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                        ],
                         controller: inn,
                         decoration: InputDecoration(
+                          hintText: "Название организации",
+                          hintStyle: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontSize: 14,
+                          ),
                           isDense: true,
                           contentPadding: EdgeInsets.all(8.0),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                          ),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(0.0))
+                              borderRadius: BorderRadius.all(Radius.circular(5.0))
                           ),
                         ),
                       )
@@ -268,7 +327,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 2,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoState(type));
@@ -291,7 +349,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 3,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoState(type));
@@ -314,7 +371,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value:4,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoState(type));
@@ -337,7 +393,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 5,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoState(type));
@@ -360,7 +415,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 6,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoState(type));
@@ -383,7 +437,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 7,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoState(type));
@@ -406,7 +459,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 8,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoState(type));
@@ -429,7 +481,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 9,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoState(type));
@@ -452,7 +503,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 10,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoState(type));
@@ -482,7 +532,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 2,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -505,7 +554,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 3,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -528,7 +576,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 4,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -551,7 +598,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 5,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -574,7 +620,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 6,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -597,7 +642,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 7,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -620,7 +664,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 8,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -643,7 +686,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 9,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -666,7 +708,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 10,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -696,7 +737,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 2,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -719,7 +759,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 3,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -742,7 +781,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 4,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -765,7 +803,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 5,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -788,7 +825,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 6,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -811,7 +847,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 7,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -834,7 +869,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 8,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -857,7 +891,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 9,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -880,7 +913,6 @@ class RegistrationScreen extends StatelessWidget{
                                 children: [
                                   Radio(
                                     value: 10,
-                                    activeColor: Colors.blueAccent,
                                     groupValue: state.typePerson,
                                     onChanged:(type) {
                                       context.bloc<RegistrationCubit>().emit(NoAgreeState(type));
@@ -935,9 +967,7 @@ class RegistrationScreen extends StatelessWidget{
                                   ),
                                   Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0), child: Container()),
                                   TextField(
-                                    cursorColor: Colors.indigo,
                                     style: TextStyle(
-                                      color: Colors.black,
                                       fontFamily: 'Segoe UI',
                                       fontSize: 14,
                                     ),
@@ -945,14 +975,8 @@ class RegistrationScreen extends StatelessWidget{
                                     decoration: InputDecoration(
                                       isDense: true,
                                       contentPadding: EdgeInsets.all(8.0),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                                      ),
                                       border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(0.0))
+                                          borderRadius: BorderRadius.all(Radius.circular(5.0))
                                       ),
                                     ),
                                   )
@@ -976,9 +1000,7 @@ class RegistrationScreen extends StatelessWidget{
                                 ),
                                 Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0), child: Container()),
                                 TextField(
-                                  cursorColor: Colors.indigo,
                                   style: TextStyle(
-                                    color: Colors.black,
                                     fontFamily: 'Segoe UI',
                                     fontSize: 14,
                                   ),
@@ -986,14 +1008,8 @@ class RegistrationScreen extends StatelessWidget{
                                   decoration: InputDecoration(
                                     isDense: true,
                                     contentPadding: EdgeInsets.all(8.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                                    ),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(0.0))
+                                        borderRadius: BorderRadius.all(Radius.circular(5.0))
                                     ),
                                   ),
                                 )
@@ -1017,9 +1033,7 @@ class RegistrationScreen extends StatelessWidget{
                                 ),
                                 Padding(padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0), child: Container()),
                                 TextField(
-                                  cursorColor: Colors.indigo,
                                   style: TextStyle(
-                                    color: Colors.black,
                                     fontFamily: 'Segoe UI',
                                     fontSize: 14,
                                   ),
@@ -1027,14 +1041,8 @@ class RegistrationScreen extends StatelessWidget{
                                   decoration: InputDecoration(
                                     isDense: true,
                                     contentPadding: EdgeInsets.all(8.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                                    ),
                                     border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(0.0))
+                                        borderRadius: BorderRadius.all(Radius.circular(5.0))
                                     ),
                                   ),
                                 )
@@ -1089,9 +1097,7 @@ class RegistrationScreen extends StatelessWidget{
                         child: AbsorbPointer(
                           child: TextField(
                             keyboardType: null,
-                            cursorColor: Colors.indigo,
                             style: TextStyle(
-                              color: Colors.black,
                               fontFamily: 'Segoe UI',
                               fontSize: 14,
                             ),
@@ -1101,14 +1107,8 @@ class RegistrationScreen extends StatelessWidget{
                               isDense: true,
                               contentPadding: EdgeInsets.all(8.0),
                               hintText: "дд-мм-гггг",
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                              ),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(0.0))
+                                  borderRadius: BorderRadius.all(Radius.circular(5.0))
                               ),
                             ),
                           ),
@@ -1145,9 +1145,7 @@ class RegistrationScreen extends StatelessWidget{
                       padding: EdgeInsets.only(top: 15.0),
                       child: TextField(
                         focusNode: textFieldPhone,
-                        cursorColor: Colors.indigo,
                         style: TextStyle(
-                          color: Colors.black54,
                           fontFamily: 'Segoe UI',
                           fontSize: 16,
                         ),
@@ -1164,14 +1162,8 @@ class RegistrationScreen extends StatelessWidget{
                           ),
                           isDense: true,
                           contentPadding: EdgeInsets.all(8.0),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                          ),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(0.0))
+                              borderRadius: BorderRadius.all(Radius.circular(5.0))
                           ),
                         ),
                       )
@@ -1217,9 +1209,7 @@ class RegistrationScreen extends StatelessWidget{
                     if (state is YesState || state is NoState || state is YesAgreeState || state is NoAgreeState || state is ErrorState) Padding(
                       padding: EdgeInsets.only(top: 15.0),
                       child: TextField(
-                        cursorColor: Colors.indigo,
                         style: TextStyle(
-                          color: Colors.black,
                           fontFamily: 'Segoe UI',
                           fontSize: 14,
                         ),
@@ -1227,14 +1217,8 @@ class RegistrationScreen extends StatelessWidget{
                         decoration: InputDecoration(
                           isDense: true,
                           contentPadding: EdgeInsets.all(8.0),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                          ),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(0.0))
+                              borderRadius: BorderRadius.all(Radius.circular(5.0))
                           ),
                         ),
                       )
@@ -1266,13 +1250,93 @@ class RegistrationScreen extends StatelessWidget{
                       ),
                     ),
                     if (state is YesState || state is NoState || state is YesAgreeState || state is NoAgreeState || state is ErrorState) Padding(
+                      padding: EdgeInsets.only(top: 15.0),
+                      child: Text(
+                        "7. Регион",
+                        style: TextStyle(
+                            fontFamily: 'Segoe UI',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    if (state is YesState || state is NoState || state is YesAgreeState || state is NoAgreeState || state is ErrorState) Padding(
+                        padding: EdgeInsets.only(top: 5.0),
+                        child: SearchableDropdown(
+                          hint: Container(
+                            margin: EdgeInsets.all(10.0),
+                            child: Text(
+                              "Выберите регион...",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Segoe UI',
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Segoe UI',
+                            fontSize: 14,
+                          ),
+                          underline: Container(
+                            height: 1.0,
+                            decoration: BoxDecoration(
+                                border:
+                                Border(bottom: BorderSide(color: Colors.blueAccent, width: 1.0))),
+                          ),
+                          items: regions.values.map((item) {
+                            return new DropdownMenuItem<String>(
+                                child: Text(
+                                  item,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: 'Segoe UI',
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                value: item
+                            );
+                          }).toList(),
+                          searchFn: (String keyword, items) {
+                            List<int> ret = List<int>();
+                            if (keyword != null && items != null && keyword.isNotEmpty) {
+                              keyword.split(" ").forEach((k) {
+                                int i = 0;
+                                items.forEach((item) {
+                                  if (k.isNotEmpty &&
+                                      (item.value
+                                          .toString()
+                                          .toLowerCase()
+                                          .contains(k.toLowerCase()))) {
+                                    ret.add(i);
+                                  }
+                                  i++;
+                                });
+                              });
+                            }
+                            if (keyword.isEmpty) {
+                              ret = Iterable<int>.generate(items.length).toList();
+                            }
+                            return (ret);
+                          },
+                          isExpanded: true,
+                          isCaseSensitiveSearch: false,
+                          closeButton: null,
+                          onChanged: (value) {
+                            region.text = regions.keys.firstWhere(
+                                    (e) => regions[e] == value, orElse: () => null).toString();
+                          },
+                        ),
+                    ),
+                    if (state is YesState || state is NoState || state is YesAgreeState || state is NoAgreeState || state is ErrorState) Padding(
                         padding: EdgeInsets.only(top: 15.0),
                         child: Row(
                           children: [
                             Flexible(
                                 flex: 1,
                                 child: Checkbox(
-                                  activeColor: Colors.blueAccent,
                                   value: state is YesAgreeState || state is NoAgreeState || (state is ErrorState && state.agree),
                                   onChanged: (bool val) {
                                     if (state is YesState && val) {
@@ -1400,8 +1464,9 @@ class RegistrationScreen extends StatelessWidget{
                             if ((inn.text.length > 0 || checkType) && name.text.length > 0 && lastname.text.length > 0 && surname.text.length > 0
                             && datebirthday.text.length > 0 && phone.text.length > 0 && email.text.length > 0
                                 && phone.text.length == 18 && RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email.text)) {
+                              if (region.text == null) region.text = "";
                               var body = {
-                                "id_region": "13",
+                                "id_region": region.text,
                                 "type_person": type.toString(),
                                 "inn": inn.text,
                                 "city": "",

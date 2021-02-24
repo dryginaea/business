@@ -14,7 +14,9 @@ class CoursesPromo extends StatelessWidget {
         return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
+              backgroundColor: Colors.white,
               elevation: 0.0,
+              iconTheme: IconThemeData(color: Colors.black),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -114,10 +116,14 @@ class CoursesPromo extends StatelessWidget {
       }
 
       return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
         body: Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-          ),
+          child: CircularProgressIndicator(),
         ),
       );
     });

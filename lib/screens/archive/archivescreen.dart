@@ -21,6 +21,7 @@ class ArchiveScreen extends StatelessWidget {
             return Scaffold(
                 backgroundColor: Colors.white,
                 appBar: AppBar(
+                  backgroundColor: Colors.white,
                   elevation: 0.0,
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -31,6 +32,7 @@ class ArchiveScreen extends StatelessWidget {
                           child: Text(
                               state.balls + "Б",
                               style: TextStyle(
+                                color: Colors.black,
                                 fontFamily: 'Segoe UI',
                                 fontSize: 16,
                                 //fontWeight: FontWeight.w700,
@@ -91,6 +93,7 @@ class ArchiveScreen extends StatelessWidget {
                       child: Text(
                         "Архив",
                         style: TextStyle(
+                          color: Colors.black,
                           fontFamily: 'Segoe UI',
                           fontSize: 32,
                           fontWeight: FontWeight.w700,
@@ -104,9 +107,7 @@ class ArchiveScreen extends StatelessWidget {
                         child: SizedBox(
                           height: 25.0,
                           width: 25.0,
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-                          ),
+                          child: CircularProgressIndicator(),
                         )
                       )
                     );
@@ -168,13 +169,13 @@ class ArchiveScreen extends StatelessWidget {
           }
 
           return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
+              backgroundColor: Colors.white,
               elevation: 0.0,
             ),
             body: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-              ),
+              child: CircularProgressIndicator(),
             ),
           );
         }

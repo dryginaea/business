@@ -32,6 +32,7 @@ class HomeScreen extends StatelessWidget {
          return Scaffold(
            backgroundColor: Colors.white,
            appBar: AppBar(
+             backgroundColor: Colors.white,
              elevation: 0.0,
              title: Row(
                mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,6 +43,7 @@ class HomeScreen extends StatelessWidget {
                      child: Text(
                          state.balls + "Б",
                          style: TextStyle(
+                           color: Colors.black,
                            fontFamily: 'Segoe UI',
                            fontSize: 16,
                            //fontWeight: FontWeight.w700,
@@ -663,9 +665,7 @@ class HomeScreen extends StatelessWidget {
 
        return Scaffold(
          body: Center(
-           child: CircularProgressIndicator(
-             valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-           ),
+           child: CircularProgressIndicator(),
          ),
        );
      }

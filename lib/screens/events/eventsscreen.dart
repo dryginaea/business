@@ -27,6 +27,7 @@ class EventsScreen extends StatelessWidget {
             return Scaffold(
                 backgroundColor: Colors.white,
                 appBar: AppBar(
+                  backgroundColor: Colors.white,
                   elevation: 0.0,
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,6 +38,7 @@ class EventsScreen extends StatelessWidget {
                           child: Text(
                               state.balls + "Б",
                               style: TextStyle(
+                                color: Colors.black,
                                 fontFamily: 'Segoe UI',
                                 fontSize: 16,
                                 //fontWeight: FontWeight.w700,
@@ -296,13 +298,13 @@ class EventsScreen extends StatelessWidget {
           }
 
           return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
+              backgroundColor: Colors.white,
               elevation: 0.0,
             ),
             body: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-              ),
+              child: CircularProgressIndicator(),
             ),
           );
         }

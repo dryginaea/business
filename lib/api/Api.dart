@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:isbusiness/data/auth/auth.dart';
 import 'package:isbusiness/data/checkphoneindb/checkphoneindb.dart';
+import 'package:isbusiness/data/company/company.dart';
 import 'package:isbusiness/data/course/course.dart';
 import 'package:isbusiness/data/courseInfo/courseInfo.dart';
 import 'package:isbusiness/data/errorversion/errorversion.dart';
@@ -74,13 +75,18 @@ class ApiService {
     return ErrorVersion.fromJson(jsonDecode(response.data));
   }
 
-  Future<void> getRegionsList () async {
-    Response response = await dio.post('https://inficomp.ru/anketa/api/project/getallregionsapp.php');
-    var mapRegion = Map<int, String>();
-    for (var region in jsonDecode(response.data)) {
-      print(region['id'] + ': "' + region['name'] + '",');
-    }
-    print(mapRegion);
+  Future<CompanyList> getCompanyList(String key) async{
+    dio.options.headers['Authorization'] = 'Token 09149ae33eb6cc21c624536e65b47d64885e07ab';
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Accept'] = 'application/json';
+    Response response = await dio.post(
+        'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/party',
+        data: jsonEncode(<String, String>{
+          'query': key,
+        }));
+
+    print(response.data);
+    return CompanyList.fromJson(response.data);
   }
 
   Future<void> updateFCMToken (String tokenPush, String device) async{

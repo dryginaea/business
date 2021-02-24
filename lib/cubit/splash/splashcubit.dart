@@ -33,7 +33,6 @@ class SplashCubit extends Cubit<SplashState> {
 
   void initial(BuildContext context) async{
     emit(LoadingState());
-    await apiService.getRegionsList();
     var version = await apiService.getVersionApp();
     if (version.critical && version.version != '2.0.6') {
       showDialog(barrierDismissible: false, context: context, builder: (context) => AlertDialog(

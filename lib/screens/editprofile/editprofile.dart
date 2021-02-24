@@ -111,10 +111,13 @@ class EditProfileState extends State<EditProfile> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           elevation: 0.0,
+          iconTheme: IconThemeData(color: Colors.black),
           title: Text(
             "Профиль",
             style: TextStyle(
+              color: Colors.black,
               fontFamily: 'Segoe UI',
               fontSize: 19,
               fontWeight: FontWeight.w600,
@@ -213,9 +216,7 @@ class EditProfileState extends State<EditProfile> {
                       Container(
                         margin: EdgeInsets.all(10.0),
                         child: TextField(
-                          cursorColor: Colors.indigo,
                           style: TextStyle(
-                            color: Colors.black,
                             fontFamily: 'Segoe UI',
                             fontSize: 14,
                           ),
@@ -223,14 +224,8 @@ class EditProfileState extends State<EditProfile> {
                           decoration: InputDecoration(
                             isDense: true,
                             contentPadding: EdgeInsets.all(8.0),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                            ),
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(0.0))
+                                borderRadius: BorderRadius.all(Radius.circular(5.0))
                             ),
                           ),
                         ),
@@ -248,9 +243,7 @@ class EditProfileState extends State<EditProfile> {
                       Container(
                         margin: EdgeInsets.all(10.0),
                         child: TextField(
-                          cursorColor: Colors.indigo,
                           style: TextStyle(
-                            color: Colors.black,
                             fontFamily: 'Segoe UI',
                             fontSize: 14,
                           ),
@@ -258,14 +251,8 @@ class EditProfileState extends State<EditProfile> {
                           decoration: InputDecoration(
                             isDense: true,
                             contentPadding: EdgeInsets.all(8.0),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                            ),
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(0.0))
+                                borderRadius: BorderRadius.all(Radius.circular(5.0))
                             ),
                           ),
                         ),
@@ -283,9 +270,7 @@ class EditProfileState extends State<EditProfile> {
                       Container(
                         margin: EdgeInsets.all(10.0),
                         child: TextField(
-                          cursorColor: Colors.indigo,
                           style: TextStyle(
-                            color: Colors.black,
                             fontFamily: 'Segoe UI',
                             fontSize: 14,
                           ),
@@ -293,14 +278,8 @@ class EditProfileState extends State<EditProfile> {
                           decoration: InputDecoration(
                             isDense: true,
                             contentPadding: EdgeInsets.all(8.0),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black45, width: 1.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                            ),
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(0.0))
+                                borderRadius: BorderRadius.all(Radius.circular(5.0))
                             ),
                           ),
                         ),
@@ -319,7 +298,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["1"],
                             onChanged: (bool value) {
                               setState(() {
@@ -349,7 +327,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["2"],
                             onChanged: (bool value) {
                               setState(() {
@@ -379,7 +356,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["3"],
                             onChanged: (bool value) {
                               setState(() {
@@ -409,7 +385,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["4"],
                             onChanged: (bool value) {
                               setState(() {
@@ -439,7 +414,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["5"],
                             onChanged: (bool value) {
                               setState(() {
@@ -469,7 +443,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["6"],
                             onChanged: (bool value) {
                               setState(() {
@@ -499,7 +472,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["7"],
                             onChanged: (bool value) {
                               setState(() {
@@ -529,7 +501,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["8"],
                             onChanged: (bool value) {
                               setState(() {
@@ -569,7 +540,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["16"],
                             onChanged: (bool value) {
                               setState(() {
@@ -599,7 +569,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["17"],
                             onChanged: (bool value) {
                               setState(() {
@@ -629,7 +598,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["18"],
                             onChanged: (bool value) {
                               setState(() {
@@ -659,7 +627,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["19"],
                             onChanged: (bool value) {
                               setState(() {
@@ -689,7 +656,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["20"],
                             onChanged: (bool value) {
                               setState(() {
@@ -719,7 +685,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["21"],
                             onChanged: (bool value) {
                               setState(() {
@@ -749,7 +714,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["22"],
                             onChanged: (bool value) {
                               setState(() {
@@ -779,7 +743,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["23"],
                             onChanged: (bool value) {
                               setState(() {
@@ -809,7 +772,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["24"],
                             onChanged: (bool value) {
                               setState(() {
@@ -839,7 +801,6 @@ class EditProfileState extends State<EditProfile> {
                         height: 30,
                         child: ListTile(
                           leading: Checkbox(
-                            activeColor: Colors.blueAccent,
                             value: interests["25"],
                             onChanged: (bool value) {
                               setState(() {
@@ -1018,9 +979,7 @@ class EditProfileState extends State<EditProfile> {
                     };
 
                     try{
-                      showDialog(context: context, builder: (context) => Center(child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-                      ),));
+                      showDialog(context: context, builder: (context) => Center(child: CircularProgressIndicator()));
                       await apiService.setInfo(data);
                       if (_image != null) {
                         await apiService.updateAvatar(_image);
