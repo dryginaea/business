@@ -5,12 +5,10 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:isbusiness/cubit/courseinfo/courseinfocubit.dart';
 import 'package:isbusiness/cubit/courseinfo/courseinfostate.dart';
 import 'package:isbusiness/cubit/lessoninfo/lessoninfocubit.dart';
-import 'package:isbusiness/cubit/lessoninfo/lessoninfostate.dart';
 import 'package:isbusiness/data/questions/questions.dart';
 import 'package:isbusiness/router/router.dart';
 import 'package:isbusiness/screens/course/rates.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class CourseInfo extends StatelessWidget {
   @override
@@ -21,8 +19,11 @@ class CourseInfo extends StatelessWidget {
           print(state.video);
           var questionController = TextEditingController();
           return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
+              backgroundColor: Colors.white,
               elevation: 0.0,
+              iconTheme: IconThemeData(color: Colors.black),
               title: Row(
                 children: [
                   Expanded(flex: 7, child: Container(
@@ -30,9 +31,9 @@ class CourseInfo extends StatelessWidget {
                       child: Text(
                           state.balls + "Б",
                           style: TextStyle(
+                            color: Colors.black,
                             fontFamily: 'Segoe UI',
                             fontSize: 16,
-                            //fontWeight: FontWeight.w700,
                           ),
                           textAlign: TextAlign.right
                       )),),
@@ -233,7 +234,6 @@ class CourseInfo extends StatelessWidget {
                         child: TextFormField(
                           maxLines: 5,
                           controller: questionController,
-                          cursorColor: Colors.indigo,
                           style: TextStyle(
                             color: Colors.black54,
                             fontFamily: 'Segoe UI',
@@ -393,13 +393,14 @@ class CourseInfo extends StatelessWidget {
         }
 
         return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
+              backgroundColor: Colors.white,
               elevation: 0.0,
+              iconTheme: IconThemeData(color: Colors.black),
             ),
             body: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-              ),
+              child: CircularProgressIndicator(),
             )
         );
       },

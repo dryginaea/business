@@ -36,10 +36,13 @@ class InterestsState extends State<Interests> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+            backgroundColor: Colors.white,
             elevation: 0.0,
+            iconTheme: IconThemeData(color: Colors.black),
             title: Text(
               "Интересы",
               style: TextStyle(
+                color: Colors.black,
                 fontFamily: 'Segoe UI',
                 fontSize: 22,
                 fontWeight: FontWeight.w600,
@@ -59,7 +62,6 @@ class InterestsState extends State<Interests> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Flexible(flex: 1, child: Checkbox(
-                                activeColor: Colors.blueAccent,
                                 value: interestsInt.contains(value),
                                 onChanged: (bool valueBool) {
                                   valueBool ? interestsInt.add(value) : interestsInt.remove(value);

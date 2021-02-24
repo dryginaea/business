@@ -2,9 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:isbusiness/cubit/courseinfo/courseinfocubit.dart';
 import 'package:isbusiness/cubit/eventinfo/eventinfocubit.dart';
-import 'package:isbusiness/cubit/eventpastinfo/eventpastinfocubit.dart';
 import 'package:isbusiness/cubit/profile/profilecubit.dart';
 import 'package:isbusiness/cubit/profile/profilestate.dart';
 import 'package:isbusiness/cubit/shop/shopcubit.dart';
@@ -27,10 +25,12 @@ class ProfileScreen extends StatelessWidget {
             return Scaffold(
                 backgroundColor: Colors.white,
                 appBar: AppBar(
+                  backgroundColor: Colors.white,
                   elevation: 0.0,
                   title: Text(
                     "Профиль",
                     style: TextStyle(
+                      color: Colors.black,
                       fontFamily: 'Segoe UI',
                       fontSize: 22,
                       fontWeight: FontWeight.w600,
@@ -269,7 +269,6 @@ class ProfileScreen extends StatelessWidget {
                                             TextButton(child: Text(
                                               'Отмена',
                                               style: TextStyle(
-                                                color: Colors.blueAccent,
                                                 fontFamily: 'Segoe UI',
                                                 fontSize: 14,
                                               ),
@@ -281,7 +280,6 @@ class ProfileScreen extends StatelessWidget {
                                             TextButton(child: Text(
                                               'Обменять',
                                               style: TextStyle(
-                                                color: Colors.blueAccent,
                                                 fontFamily: 'Segoe UI',
                                                 fontSize: 14,
                                               ),
@@ -344,7 +342,7 @@ class ProfileScreen extends StatelessWidget {
                                     child: LinearProgressIndicator(
                                       value: int.parse(state.balls) / int.parse(state.tempProduct.cost_balls) ?? 0.0,
                                       backgroundColor: Color.fromARGB(255, 243, 246, 251),
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.indigoAccent),
+                                      //valueColor: AlwaysStoppedAnimation<Color>(Colors.indigoAccent),
                                     ),
                                   ),
                                 )

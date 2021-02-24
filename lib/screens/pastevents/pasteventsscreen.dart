@@ -19,10 +19,13 @@ class PastEventsScreen extends StatelessWidget {
             return Scaffold(
                 backgroundColor: Colors.white,
                 appBar: AppBar(
-                  elevation: 0.0,
+                    backgroundColor: Colors.white,
+                    elevation: 0.0,
+                    iconTheme: IconThemeData(color: Colors.black),
                   title: Text(
                     "Посещённые мероприятия",
                     style: TextStyle(
+                      color: Colors.black,
                       fontFamily: 'Segoe UI',
                       fontSize: 22,
                       fontWeight: FontWeight.w600,
@@ -32,6 +35,19 @@ class PastEventsScreen extends StatelessWidget {
                 ),
                 body: ListView(
                   children: [
+                    if (state.events.length == 0) Container(
+                      margin: EdgeInsets.only(top: 200.0),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Вы не посещали мероприятия",
+                        style: TextStyle(
+                          fontFamily: 'Segoe UI',
+                          fontSize: 16,
+                          color: Colors.blueAccent
+                          //fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
                     for (var event in state.events) GestureDetector(
                       child: Container(
                         padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
@@ -128,13 +144,14 @@ class PastEventsScreen extends StatelessWidget {
           }
 
           return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
+              backgroundColor: Colors.white,
               elevation: 0.0,
+              iconTheme: IconThemeData(color: Colors.black),
             ),
             body: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-              ),
+              child: CircularProgressIndicator(),
             ),
           );
         }

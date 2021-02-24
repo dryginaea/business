@@ -21,8 +21,11 @@ class EventInfo extends StatelessWidget {
           );
 
           return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
+              backgroundColor: Colors.white,
               elevation: 0.0,
+              iconTheme: IconThemeData(color: Colors.black),
               title: Row(
                 children: [
                   Expanded(flex: 7, child: Container(
@@ -30,6 +33,7 @@ class EventInfo extends StatelessWidget {
                       child: Text(
                           state.balls + "Б",
                           style: TextStyle(
+                            color: Colors.black,
                             fontFamily: 'Segoe UI',
                             fontSize: 16,
                             //fontWeight: FontWeight.w700,
@@ -204,13 +208,14 @@ class EventInfo extends StatelessWidget {
         }
 
         return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
+              backgroundColor: Colors.white,
               elevation: 0.0,
+              iconTheme: IconThemeData(color: Colors.black),
             ),
             body: Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-              ),
+              child: CircularProgressIndicator(),
             )
         );
       },

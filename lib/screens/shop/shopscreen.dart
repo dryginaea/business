@@ -52,8 +52,10 @@ class ShopScreen extends StatelessWidget {
                 return Scaffold(
                   backgroundColor: Colors.white,
                   appBar: AppBar(
+                    backgroundColor: Colors.white,
                     elevation: 0.0,
                     bottom: TabBar(
+                      indicatorColor: Colors.white,
                       labelColor: Colors.indigoAccent,
                       unselectedLabelColor: Colors.black38,
                       tabs: [
@@ -83,6 +85,7 @@ class ShopScreen extends StatelessWidget {
                         Expanded(flex: 4, child: Text(
                           "Магазин",
                           style: TextStyle(
+                            color: Colors.black,
                             fontFamily: 'Segoe UI',
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
@@ -94,6 +97,7 @@ class ShopScreen extends StatelessWidget {
                             child: Text(
                                 state.balls + "Б",
                                 style: TextStyle(
+                                  color: Colors.black,
                                   fontFamily: 'Segoe UI',
                                   fontSize: 16,
                                   //fontWeight: FontWeight.w700,
@@ -342,7 +346,6 @@ class ShopScreen extends StatelessWidget {
                                                     TextButton(child: Text(
                                                       'Отмена',
                                                       style: TextStyle(
-                                                        color: Colors.blueAccent,
                                                         fontFamily: 'Segoe UI',
                                                         fontSize: 14,
                                                       ),
@@ -354,7 +357,6 @@ class ShopScreen extends StatelessWidget {
                                                     TextButton(child: Text(
                                                       'Обменять',
                                                       style: TextStyle(
-                                                        color: Colors.blueAccent,
                                                         fontFamily: 'Segoe UI',
                                                         fontSize: 14,
                                                       ),
@@ -458,9 +460,7 @@ class ShopScreen extends StatelessWidget {
                                       height: 44,
                                       margin: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
                                       child: TextField(
-                                        cursorColor: Colors.indigo,
                                         style: TextStyle(
-                                          color: Colors.indigoAccent,
                                           fontFamily: 'Segoe UI',
                                           fontSize: 16,
                                         ),
@@ -534,9 +534,7 @@ class ShopScreen extends StatelessWidget {
 
               return Scaffold(
                 body: Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-                  ),
+                  child: CircularProgressIndicator(),
                 ),
               );
             }

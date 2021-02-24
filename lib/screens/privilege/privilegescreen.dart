@@ -9,8 +9,11 @@ class PrivilegeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          backgroundColor: Colors.white,
           elevation: 0.0,
+          iconTheme: IconThemeData(color: Colors.black),
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios, color: Colors.black),
             onPressed: () => Navigator.pop(context),
@@ -18,6 +21,7 @@ class PrivilegeScreen extends StatelessWidget {
           title: Text(
             "Привилегии",
             style: TextStyle(
+              color: Colors.black,
               fontFamily: 'Segoe UI',
               fontSize: 22,
               fontWeight: FontWeight.w600,
@@ -90,7 +94,7 @@ class PrivilegeScreen extends StatelessWidget {
               );
             }
 
-            return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent)));
+            return Center(child: CircularProgressIndicator());
           },
         )
     );
