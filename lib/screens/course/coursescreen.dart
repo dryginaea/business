@@ -16,7 +16,6 @@ class CourseInfo extends StatelessWidget {
     return BlocBuilder<CourseInfoCubit, CourseInfoState>(
       builder: (context, state) {
         if (state is LoadedCourseInfoState) {
-          print(state.video);
           var questionController = TextEditingController();
           return Scaffold(
             backgroundColor: Colors.white,

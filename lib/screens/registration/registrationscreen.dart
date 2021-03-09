@@ -5,21 +5,23 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:isbusiness/cubit/cityList/cityListCubit.dart';
+import 'package:isbusiness/cubit/cityList/cityListState.dart';
 import 'package:isbusiness/cubit/companyInn/companyInnCubit.dart';
 import 'package:isbusiness/cubit/companyInn/companyInnState.dart';
 import 'package:isbusiness/cubit/registration/registrationcubit.dart';
 import 'package:isbusiness/cubit/registration/registrationstate.dart';
 import 'package:isbusiness/router/router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:isbusiness/data/regions/regions.dart';
 
 class RegistrationScreen extends StatelessWidget{
   var isSelected = [false, false];
   @override
   Widget build(BuildContext context) {
     context.bloc<RegistrationCubit>().emit(InitialState());
+    context.bloc<CompanyInnCubit>().initial("");
+    context.bloc<CityListCubit>().initial("");
     var inn = TextEditingController();
     var surname = TextEditingController();
     var name = TextEditingController();
@@ -28,6 +30,8 @@ class RegistrationScreen extends StatelessWidget{
     var email = TextEditingController();
     var datebirthday = TextEditingController();
     var region = TextEditingController();
+    var city = TextEditingController();
+    var code = TextEditingController();
 
     var textFieldPhone = new FocusNode();
 
@@ -215,62 +219,76 @@ class RegistrationScreen extends StatelessWidget{
                         onTap: () {
                           showDialog(
                               context: context,
-                              builder: (context) => AlertDialog(
-                                  title: TextField(
-                                    autofocus: true,
-                                    controller: inn,
-                                    style: TextStyle(
-                                      fontFamily: 'Segoe UI',
-                                      fontSize: 14,
-                                    ),
-                                    decoration: InputDecoration(
-                                      isDense: true,
-                                      contentPadding: EdgeInsets.all(8.0),
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(5.0))
-                                      ),
-                                    ),
-                                    onChanged: (text) {
-                                      context.bloc<CompanyInnCubit>().initial(text);
-                                    },
-                                  ),
-                                  content: BlocBuilder<CompanyInnCubit, CompanyInnState>(
-                                    builder: (context, stateInn) {
-                                      if (stateInn is LoadedCompanyInnState) {
-                                        return Container(
-                                          height: 300.0,
-                                          width: 300.0,
-                                          child: ListView.separated(
-                                            shrinkWrap: true,
-                                            separatorBuilder: (BuildContext context, int index) => Divider(),
-                                            itemCount: stateInn.companyList.length,
-                                            itemBuilder: (BuildContext context, int index) {
-                                              return ListTile(
-                                                onTap: () {
-                                                  inn.text = stateInn.companyList[index].inn;
-                                                  Navigator.pop(context);
-                                                },
-                                                title: Text(
-                                                  stateInn.companyList[index].name,
-                                                  style: TextStyle(
-                                                    fontFamily: 'Segoe UI',
-                                                    fontSize: 12,
+                              builder: (context) => AnimatedContainer(
+                                padding: MediaQuery.of(context).viewInsets,
+                                duration: const Duration(milliseconds: 300),
+                                child: new Card(
+                                  margin: EdgeInsets.all(10.0),
+                                  child: new Container(
+                                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                    child: new Column(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        TextField(
+                                          decoration: InputDecoration(
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                                              prefixIcon: Icon(Icons.search, color: Colors.black)
+                                          ),
+                                          autofocus: true,
+                                          controller: inn,
+                                          style: TextStyle(
+                                            fontFamily: 'Segoe UI',
+                                            fontSize: 14,
+                                          ),
+                                          onChanged: (text) {
+                                            context.bloc<CompanyInnCubit>().initial(text);
+                                          },
+                                        ),
+                                        BlocBuilder<CompanyInnCubit, CompanyInnState>(
+                                          builder: (context, stateInn) {
+                                            if (stateInn is LoadedCompanyInnState) {
+                                              return Expanded(
+                                                child: Scrollbar(
+                                                  child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    itemCount: stateInn.companyList.length,
+                                                    itemBuilder: (BuildContext context, int index) {
+                                                      return ListTile(
+                                                        onTap: () {
+                                                          inn.text = stateInn.companyList[index].inn;
+                                                          Navigator.pop(context);
+                                                        },
+                                                        title: Text(
+                                                          stateInn.companyList[index].name,
+                                                          style: TextStyle(
+                                                            fontFamily: 'Segoe UI',
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                        subtitle: Text(
+                                                          "ИНН: " + stateInn.companyList[index].inn + ", КПП: " + stateInn.companyList[index].inn,
+                                                          style: TextStyle(
+                                                            fontFamily: 'Segoe UI',
+                                                            color: Colors.black54,
+                                                            fontSize: 12,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
                                                   ),
                                                 ),
                                               );
-                                            },
-                                          ),
-                                        );
-                                      }
+                                            }
 
-                                      context.bloc<CompanyInnCubit>().initial("");
-                                      return Container(
-                                        height: 300.0,
-                                        width: 300.0,
-                                        child: Center(),
-                                      );
-                                    },
-                                  )
+                                            return Container();
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               )
                           );
                         },
@@ -1252,7 +1270,7 @@ class RegistrationScreen extends StatelessWidget{
                     if (state is YesState || state is NoState || state is YesAgreeState || state is NoAgreeState || state is ErrorState) Padding(
                       padding: EdgeInsets.only(top: 15.0),
                       child: Text(
-                        "7. Регион",
+                        "7. Город",
                         style: TextStyle(
                             fontFamily: 'Segoe UI',
                             fontSize: 14,
@@ -1262,73 +1280,99 @@ class RegistrationScreen extends StatelessWidget{
                       ),
                     ),
                     if (state is YesState || state is NoState || state is YesAgreeState || state is NoAgreeState || state is ErrorState) Padding(
-                        padding: EdgeInsets.only(top: 5.0),
-                        child: SearchableDropdown(
-                          hint: Container(
-                            margin: EdgeInsets.all(10.0),
-                            child: Text(
-                              "Выберите регион...",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Segoe UI',
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
+                        padding: EdgeInsets.only(top: 15.0),
+                        child: TextField(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => AnimatedContainer(
+                                  padding: MediaQuery.of(context).viewInsets,
+                                  duration: const Duration(milliseconds: 300),
+                                  child: new Card(
+                                    margin: EdgeInsets.all(10.0),
+                                    child: new Container(
+                                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                                      child: new Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          TextField(
+                                            decoration: InputDecoration(
+                                                contentPadding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                                                prefixIcon: Icon(Icons.search, color: Colors.black)
+                                            ),
+                                            autofocus: true,
+                                            controller: city,
+                                            style: TextStyle(
+                                              fontFamily: 'Segoe UI',
+                                              fontSize: 14,
+                                            ),
+                                            onChanged: (text) {
+                                              context.bloc<CityListCubit>().initial(text);
+                                            },
+                                          ),
+                                          BlocBuilder<CityListCubit, CityListState>(
+                                            builder: (context, stateCity) {
+                                              if (stateCity is LoadedCityListState) {
+                                                return Expanded(
+                                                  child: Scrollbar(
+                                                    child: ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: stateCity.cityList.length,
+                                                      itemBuilder: (BuildContext context, int index) {
+                                                        return ListTile(
+                                                          onTap: () {
+                                                            city.text = stateCity.cityList[index].city;
+                                                            region.text = stateCity.cityList[index].region;
+                                                            code.text = stateCity.cityList[index].code;
+                                                            Navigator.pop(context);
+                                                          },
+                                                          title: Text(
+                                                            stateCity.cityList[index].city,
+                                                            style: TextStyle(
+                                                              fontFamily: 'Segoe UI',
+                                                              fontSize: 14,
+                                                            ),
+                                                          ),
+                                                          subtitle: Text(
+                                                            stateCity.cityList[index].name,
+                                                            style: TextStyle(
+                                                              fontFamily: 'Segoe UI',
+                                                              color: Colors.black54,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+
+                                              return Container();
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                            );
+                          },
                           style: TextStyle(
-                            color: Colors.black,
                             fontFamily: 'Segoe UI',
                             fontSize: 14,
                           ),
-                          underline: Container(
-                            height: 1.0,
-                            decoration: BoxDecoration(
-                                border:
-                                Border(bottom: BorderSide(color: Colors.blueAccent, width: 1.0))),
+                          controller: city,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: EdgeInsets.all(8.0),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(5.0))
+                            ),
                           ),
-                          items: regions.values.map((item) {
-                            return new DropdownMenuItem<String>(
-                                child: Text(
-                                  item,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'Segoe UI',
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                value: item
-                            );
-                          }).toList(),
-                          searchFn: (String keyword, items) {
-                            List<int> ret = List<int>();
-                            if (keyword != null && items != null && keyword.isNotEmpty) {
-                              keyword.split(" ").forEach((k) {
-                                int i = 0;
-                                items.forEach((item) {
-                                  if (k.isNotEmpty &&
-                                      (item.value
-                                          .toString()
-                                          .toLowerCase()
-                                          .contains(k.toLowerCase()))) {
-                                    ret.add(i);
-                                  }
-                                  i++;
-                                });
-                              });
-                            }
-                            if (keyword.isEmpty) {
-                              ret = Iterable<int>.generate(items.length).toList();
-                            }
-                            return (ret);
-                          },
-                          isExpanded: true,
-                          isCaseSensitiveSearch: false,
-                          closeButton: null,
-                          onChanged: (value) {
-                            region.text = regions.keys.firstWhere(
-                                    (e) => regions[e] == value, orElse: () => null).toString();
-                          },
-                        ),
+                        )
                     ),
                     if (state is YesState || state is NoState || state is YesAgreeState || state is NoAgreeState || state is ErrorState) Padding(
                         padding: EdgeInsets.only(top: 15.0),
@@ -1469,7 +1513,8 @@ class RegistrationScreen extends StatelessWidget{
                                 "id_region": region.text,
                                 "type_person": type.toString(),
                                 "inn": inn.text,
-                                "city": "",
+                                "city": city.text,
+                                "postal_code": code.text,
                                 "name": name.text,
                                 "surname": surname.text,
                                 "last_name": lastname.text,
