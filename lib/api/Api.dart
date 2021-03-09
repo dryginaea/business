@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:isbusiness/data/auth/auth.dart';
 import 'package:isbusiness/data/checkphoneindb/checkphoneindb.dart';
+import 'package:isbusiness/data/city/city.dart';
 import 'package:isbusiness/data/company/company.dart';
 import 'package:isbusiness/data/course/course.dart';
 import 'package:isbusiness/data/courseInfo/courseInfo.dart';
@@ -35,7 +35,6 @@ class ApiService {
     dio = Dio();
     dioCacheManager = DioCacheManager(CacheConfig());
     dio.interceptors.add(dioCacheManager.interceptor);
-    //dio.interceptors.add(LogInterceptor(responseBody: true));
   }
 
   Future<void> saveToken(String token) async {
@@ -87,6 +86,22 @@ class ApiService {
 
     print(response.data);
     return CompanyList.fromJson(response.data);
+  }
+
+  Future<CityList> getCityList(String key) async{
+    dio.options.headers['Authorization'] = 'Token 09149ae33eb6cc21c624536e65b47d64885e07ab';
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Accept'] = 'application/json';
+    Response response = await dio.post(
+        'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address',
+        data: jsonEncode(<String, dynamic>{
+          "query": key,
+          "from_bound": {"value":"city"},
+          "to_bound": {"value":"settlement"}
+        }));
+
+    print(response.data);
+    return CityList.fromJson(response.data);
   }
 
   Future<void> updateFCMToken (String tokenPush, String device) async{

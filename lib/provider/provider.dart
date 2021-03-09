@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:isbusiness/api/Api.dart';
 import 'package:isbusiness/cubit/archive/archivecubit.dart';
+import 'package:isbusiness/cubit/cityList/cityListCubit.dart';
 import 'package:isbusiness/cubit/companyInn/companyInnCubit.dart';
 import 'package:isbusiness/cubit/courseinfo/courseinfocubit.dart';
 import 'package:isbusiness/cubit/coursespromo/coursespromocubit.dart';
@@ -120,6 +121,10 @@ List<SingleChildWidget> independentServices = [
   ),
   BlocProvider(
     create: (context) => CompanyInnCubit(ApiService()),
+    child: RegistrationScreen(),
+  ),
+  BlocProvider(
+    create: (context) => CityListCubit(ApiService()),
     child: RegistrationScreen(),
   ),
 ];
